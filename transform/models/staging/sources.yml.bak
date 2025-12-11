@@ -1,0 +1,8 @@
+sources:
+  - name: we_traf
+    schema: raw
+    database: raw_db
+      - name: tom_tom_reverse_geocode
+        identifier: tom_tom_reverse_geocode
+      - name: open_weather_current
+        identifier: open_weather_current

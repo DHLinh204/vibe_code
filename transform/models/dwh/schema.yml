@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: dim_reverse_geo
+    description: "Dimension table with reverse-geocoding attributes (street, ward) keyed by `osm_id`."
+    columns:
+      - name: osm_id
+        description: "OpenStreetMap identifier (dimension key)."
+        tests:
+          - not_null
+          - unique
+      - name: street_name
+        description: "Street name from reverse geocoding."
+      - name: ward
+        description: "Administrative ward (sub-district)."
+
+  - name: fact_traffic
+    description: "Fact table of traffic observations, enriched with reverse-geocode attributes."
+    columns:
+      - name: osm_id
+        description: "OpenStreetMap identifier for the observed location."
+        tests:
+          - not_null
+      - name: lat
+        description: "Latitude of observation."
+      - name: lon
+        description: "Longitude of observation."
+      - name: current_speed
+        description: "Current observed speed."
+      - name: free_flow_speed
+        description: "Free-flow speed for the segment."
+      - name: confidence
+        description: "Confidence score for traffic measurement."
+      - name: road_closure
+        description: "Road closure indicator."
+      - name: street_name
+        description: "Street name joined from `dim_reverse_geo`."
+      - name: ward
+        description: "Ward joined from `dim_reverse_geo`."
+
+  - name: fact_weather
+    description: "Fact table of current weather observations, enriched with reverse-geocode attributes."
+    columns:
+      - name: osm_id
+        description: "OpenStreetMap identifier for the observed location."
+        tests:
+          - not_null
+      - name: lat
+        description: "Latitude of observation."
+      - name: lon
+        description: "Longitude of observation."
+      - name: weather_main
+        description: "Short weather condition."
+      - name: weather_description
+        description: "Detailed weather description."
+      - name: temp
+        description: "Current temperature."
+      - name: feels_like
+        description: "Feels-like temperature."
+      - name: temp_min
+        description: "Minimum temperature."
+      - name: temp_max
+        description: "Maximum temperature."
+      - name: humidity
+        description: "Relative humidity percentage."
+      - name: city_name
+        description: "City name from weather source."
+      - name: street_name
+        description: "Street name joined from `dim_reverse_geo`."
+      - name: ward
+        description: "Ward joined from `dim_reverse_geo`."

@@ -1,0 +1,4 @@
+# Source definitions for raw data layers
+# Original sources.yml.bak contains full definitions
+# Using inline source() references in models instead of source definitions
+# to avoid dbt1053 hydration errors for non-existent external tables

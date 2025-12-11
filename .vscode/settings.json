@@ -1,0 +1,7 @@
+{
+  "dbt.enableNewLineagePanel": true,
+  "dbt.enableFuzzySuggestions": false,
+  "[dbt]": {
+    "editor.formatOnSave": false
+  }
+}

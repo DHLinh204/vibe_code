@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: mart_congestion
+    description: "Observation-level mart that enriches traffic observations with computed metrics and weather flags. Use this as the foundation for time-series, ranking and hotspot analyses."
+    columns:
+      - name: osm_id
+        description: "OpenStreetMap identifier for the road segment."
+      - name: street_name
+        description: "Street name from reverse geocode."
+      - name: ward
+        description: "Administrative ward (sub-district)."
+      - name: district
+        description: "Administrative district (quận)."
+      - name: city
+        description: "City name."
+      - name: lat
+        description: "Latitude of the observation."
+      - name: lon
+        description: "Longitude of the observation."
+      - name: observed_at
+        description: "Event timestamp of the traffic observation (optional). Add this field in upstream/staging if you want time-series analyses."
+      - name: observed_hour
+        description: "`observed_at` truncated to the hour (optional - populates when `observed_at` exists)."
+      - name: hour_of_day
+        description: "Integer hour (0-23) extracted from `observed_at` (optional). Useful for daily hourly trend charts."
+      - name: current_speed
+        description: "Current observed speed on the segment (source units)."
+      - name: free_flow_speed
+        description: "Reference free-flow / ideal speed for the segment."
+      - name: speed_ratio
+        description: "`current_speed / free_flow_speed`. Values <1 indicate slower-than-ideal flow."
+      - name: is_congested
+        description: "Boolean flag indicating congestion (speed_ratio < 0.7 by default). Adjust threshold as needed."
+      - name: weather_main
+        description: "Short weather category from the weather source."
+      - name: weather_description
+        description: "Detailed weather description."
+      - name: temp
+        description: "Observed temperature (from weather source)."
+      - name: humidity
+        description: "Observed humidity (from weather source)."
+      - name: is_raining
+        description: "Boolean flag inferred from weather fields (true when weather mentions rain)."

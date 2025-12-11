@@ -1,0 +1,70 @@
+version: 2
+
+models:
+  - name: reverse_geocode
+    description: "Staging model selecting reverse geocode fields from the `we_traf.tom_tom_reverse_geocode` source."
+    columns:
+      - name: osm_id
+        description: "OpenStreetMap identifier for the location."
+        tests:
+          - not_null
+      - name: input_lat
+        description: "Input latitude from the reverse geocode source."
+      - name: input_lon
+        description: "Input longitude from the reverse geocode source."
+      - name: street_name
+        description: "Street name returned by reverse geocoding."
+      - name: ward
+        description: "Administrative ward (sub-district)."
+      - name: district
+        description: "Administrative district."
+      - name: city
+        description: "City name."
+
+  - name: stg_traffic
+    description: "Staging model for traffic observations from `we_traf.tom_tom_traffic`."
+    columns:
+      - name: osm_id
+        description: "OpenStreetMap identifier matching the location referenced by traffic data."
+        tests:
+          - not_null
+      - name: lat
+        description: "Latitude of the traffic observation."
+      - name: lon
+        description: "Longitude of the traffic observation."
+      - name: current_speed
+        description: "Currently observed speed on the road segment (units as provided by source)."
+      - name: free_flow_speed
+        description: "Expected free-flow speed for the road segment."
+      - name: confidence
+        description: "Confidence score for the traffic observation."
+      - name: road_closure
+        description: "Indicator flag for road closure (if present in source)."
+
+  - name: stg_weather
+    description: "Staging model for current weather observations from `we_traf.open_weather_current`."
+    columns:
+      - name: osm_id
+        description: "OpenStreetMap identifier to join weather to spatial features."
+        tests:
+          - not_null
+      - name: lat
+        description: "Latitude of the weather observation."
+      - name: lon
+        description: "Longitude of the weather observation."
+      - name: weather_main
+        description: "Short weather condition (e.g., Rain, Clear)."
+      - name: weather_description
+        description: "Longer description of the weather condition."
+      - name: temp
+        description: "Current temperature (units as provided by source)."
+      - name: feels_like
+        description: "Feels-like temperature."
+      - name: temp_min
+        description: "Minimum observed temperature."
+      - name: temp_max
+        description: "Maximum observed temperature."
+      - name: humidity
+        description: "Relative humidity percentage."
+      - name: city_name
+        description: "Name of the city reported by the weather source."
