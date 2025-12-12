@@ -1,0 +1,104 @@
+# STG_TRAFFIC 
+checks for staging.stg_traffic:
+  - row_count > 0:
+      name: "STG_TRAFFIC: Has data"
+  
+
+  - missing_count(current_speed) = 0:
+      name: "STG_TRAFFIC: Speed - No nulls"
+  - missing_count(lat) = 0:
+      name: "STG_TRAFFIC: Latitude - No nulls"
+  - missing_count(lon) = 0:
+      name: "STG_TRAFFIC: Longitude - No nulls"
+  - missing_count(observed_at) = 0:
+      name: "STG_TRAFFIC: Observed_at - No nulls"
+  
+  - duplicate_count(osm_id, observed_at) = 0:
+      name: "STG_TRAFFIC: No duplicate records per location-time"
+
+checks for staging.stg_weather:
+  - row_count > 0:
+      name: "STG_WEATHER: Has data"
+  
+  - missing_count(temp) = 0:
+      name: "STG_WEATHER: Temperature - No nulls"
+  - missing_count(humidity) = 0:
+      name: "STG_WEATHER: Humidity - No nulls"
+  - missing_count(observed_at) = 0:
+      name: "STG_WEATHER: Observed_at - No nulls"
+  
+  - duplicate_count(osm_id, observed_at) = 0:
+      name: "STG_WEATHER: No duplicate records per location-time"
+
+# REVERSE_GEOCODE 
+checks for staging.reverse_geocode:
+  - row_count > 0:
+      name: "REVERSE_GEOCODE: Has data"
+  
+  - missing_percent(city) < 15:
+      name: "REVERSE_GEOCODE: City enrichment >= 85%"
+  
+  - missing_percent(district) < 20:
+      name: "REVERSE_GEOCODE: District enrichment >= 80%"
+  
+  - duplicate_count(osm_id) = 0:
+      name: "REVERSE_GEOCODE: OSM ID is unique"
+
+
+# FACT_TRAFFIC
+checks for dwh.fact_traffic:
+  - row_count > 0:
+      name: "FACT_TRAFFIC: Has data"
+  
+  - missing_count(current_speed) = 0:
+      name: "FACT_TRAFFIC: Speed - No nulls"
+  - missing_count(osm_id) = 0:
+      name: "FACT_TRAFFIC: OSM ID - No nulls"
+  
+  - missing_percent(street_name) < 20:
+      name: "FACT_TRAFFIC: Street enrichment >= 80%"
+  
+  - duplicate_count(osm_id, observed_at) = 0:
+      name: "FACT_TRAFFIC: No duplicate records"
+
+# FACT_WEATHER
+checks for dwh.fact_weather:
+  - row_count > 0:
+      name: "FACT_WEATHER: Has data"
+  
+  - missing_count(temp) = 0:
+      name: "FACT_WEATHER: Temperature - No nulls"
+  - missing_count(humidity) = 0:
+      name: "FACT_WEATHER: Humidity - No nulls"
+  - missing_count(osm_id) = 0:
+      name: "FACT_WEATHER: OSM ID - No nulls"
+  
+  - duplicate_count(osm_id, observed_at) = 0:
+      name: "FACT_WEATHER: No duplicate records"
+
+# DIM_REVERSE_GEO
+checks for dwh.dim_reverse_geo:
+  - row_count > 50:
+      name: "DIM_REVERSE_GEO: Has >= 50 locations"
+  
+  - duplicate_count(osm_id) = 0:
+      name: "DIM_REVERSE_GEO: OSM ID is unique"
+  
+  - missing_percent(street_name) < 5:
+      name: "DIM_REVERSE_GEO: Street enrichment >= 95%"
+  - missing_percent(ward) < 10:
+      name: "DIM_REVERSE_GEO: Ward enrichment >= 90%"
+
+
+# MART_CONGESTION
+checks for marts.mart_congestion:
+  - row_count > 0:
+      name: "MART_CONGESTION: Has data"
+  
+  - missing_count(is_congested) = 0:
+      name: "MART_CONGESTION: Congestion flag - No nulls"
+  - missing_count(observed_at) = 0:
+      name: "MART_CONGESTION: Observed_at - No nulls"
+  
+  - missing_percent(weather_main) < 30:
+      name: "MART_CONGESTION: Weather enrichment >= 70%"
