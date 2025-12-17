@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Biểu đồ tròn số lượng mẫu</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Plugin hiển thị label -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+        .chart-box {
+            width: 550px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chart-box">
+    <h2>Phân bố số lượng mẫu theo đối tượng</h2>
+    <canvas id="pieChart"></canvas>
+</div>
+
+<script>
+const labels = [
+    'Thực vật',
+    'Đất xây dựng',
+    'Nước mặt',
+    'Đường giao thông',
+    'Đất trống'
+];
+
+const dataValues = [1441, 993, 227, 223, 1017];
+const total = dataValues.reduce((a, b) => a + b, 0);
+
+new Chart(document.getElementById('pieChart'), {
+    type: 'pie',
+    data: {
+        labels: labels,
+        datasets: [{
+            data: dataValues,
+            backgroundColor: [
+                '#2ecc71',
+                '#bdc3c7',
+                '#3498db',
+                '#2c3e50',
+                '#e67e22'
+            ],
+            borderColor: '#ffffff',
+            borderWidth: 2
+        }]
+    },
+    plugins: [ChartDataLabels],
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    padding: 15
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const value = context.raw;
+                        const percent = ((value / total) * 100).toFixed(2);
+                        return `${context.label}: ${value} mẫu (${percent}%)`;
+                    }
+                }
+            },
+            datalabels: {
+                color: '#fff',
+                font: {
+                    weight: 'bold',
+                    size: 13
+                },
+                formatter: (value) => {
+                    const percent = (value / total * 100).toFixed(1);
+                    return percent + '%';
+                }
+            }
+        }
+    }
+});
+</script>
+
+</body>
+</html>
