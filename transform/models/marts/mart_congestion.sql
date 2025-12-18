@@ -9,11 +9,11 @@ with base as (
         f.lon,
         f.current_speed,
         f.free_flow_speed,
-        -- timestamp / hour (populated from ingest)
+
         f.observed_at::timestamp as observed_at,
         date_trunc('hour', f.observed_at::timestamp) as observed_hour,
         cast(date_part('hour', f.observed_at::timestamp) as integer) as hour_of_day,
-        -- computed metrics
+        
         case
           when f.free_flow_speed is not null and f.free_flow_speed > 0
           then (f.current_speed::double precision / f.free_flow_speed::double precision)
@@ -25,7 +25,7 @@ with base as (
           then true
           else false
         end as is_congested,
-        -- join weather (attempt to match on same hour)
+        
         w.weather_main,
         w.weather_description,
         w.temp,
