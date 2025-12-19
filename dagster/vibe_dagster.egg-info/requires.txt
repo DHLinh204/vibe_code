@@ -1,0 +1,10 @@
+dagster>=1.5.0
+dagster-postgres
+dagster-dbt
+dbt-postgres
+pandas
+
+[dev]
+pytest
+black
+ruff

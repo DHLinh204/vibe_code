@@ -1,38 +1,45 @@
 """
+Find all numbers that appear at least three times consecutively.
+
+Return the result table in any order.
+
+The result format is in the following example.
+
+ 
+
 Example 1:
 
 Input: 
-Courses table:
-+---------+----------+
-| student | class    |
-+---------+----------+
-| A       | Math     |
-| B       | English  |
-| C       | Math     |
-| D       | Biology  |
-| E       | Math     |
-| F       | Computer |
-| G       | Math     |
-| H       | Math     |
-| I       | Math     |
-+---------+----------+
+Logs table:
++----+-----+
+| id | num |
++----+-----+
+| 1  | 1   |
+| 2  | 1   |
+| 3  | 1   |
+| 4  | 2   |
+| 5  | 1   |
+| 6  | 2   |
+| 7  | 2   |
++----+-----+
 Output: 
-+---------+
-| class   |
-+---------+
-| Math    |
-+---------+
-Explanation: 
-- Math has 6 students, so we include it.
-- English has 1 student, so we do not include it.
-- Biology has 1 student, so we do not include it.
-- Computer has 1 student, so we do not include it.
++-----------------+
+| ConsecutiveNums |
++-----------------+
+| 1               |
++-----------------+
+Explanation: 1 is the only number that appears consecutively for at least three times.
 """
 {# +-------------+---------------+ #}
 {# Explanation: The average experience years for the first project #}
 
-select  
-    class
-from Courses
-where count(student) > 5
-group by class
+select 
+    x, 
+    y,
+    z,
+    case
+        when x + y > z 
+        and y + z > x
+        and x + z > 
+            then 'Yes' else 'No' end
+from Triangle
