@@ -1,45 +1,34 @@
 """
-Find all numbers that appear at least three times consecutively.
-
-Return the result table in any order.
-
-The result format is in the following example.
-
- 
-
 Example 1:
 
-Input: 
-Logs table:
-+----+-----+
-| id | num |
-+----+-----+
-| 1  | 1   |
-| 2  | 1   |
-| 3  | 1   |
-| 4  | 2   |
-| 5  | 1   |
-| 6  | 2   |
-| 7  | 2   |
-+----+-----+
+Input:  
+Employees table:
++-------------+-----------+------------+--------+
+| employee_id | name      | manager_id | salary |
++-------------+-----------+------------+--------+
+| 3           | Mila      | 9          | 60301  |
+| 12          | Antonella | null       | 31000  |
+| 13          | Emery     | null       | 67084  |
+| 1           | Kalel     | 11         | 21241  |
+| 9           | Mikaela   | null       | 50937  |
+| 11          | Joziah    | 6          | 28485  |
++-------------+-----------+------------+--------+
 Output: 
-+-----------------+
-| ConsecutiveNums |
-+-----------------+
-| 1               |
-+-----------------+
-Explanation: 1 is the only number that appears consecutively for at least three times.
++-------------+
+| employee_id |
++-------------+
+| 11          |
++-------------+
 """
-{# +-------------+---------------+ #}
-{# Explanation: The average experience years for the first project #}
 
 select 
-    x, 
-    y,
-    z,
-    case
-        when x + y > z 
-        and y + z > x
-        and x + z > 
-            then 'Yes' else 'No' end
-from Triangle
+    e.employee_id
+from (
+    select
+        manager_id
+    from Employees
+    where manager_id is not null
+) f
+join Employees e 
+    on e.employee_id = f.manager_id
+where e.salary < 30000
