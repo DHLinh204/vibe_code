@@ -1,0 +1,144 @@
+Metadata-Version: 2.4
+Name: dagster_module
+Version: 0.1.0
+Summary: Add your description here
+Requires-Python: <3.14,>=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: dagster
+Requires-Dist: dagster-cloud
+Requires-Dist: dagster-dbt
+Requires-Dist: dbt-core<2.0.0,>=1.0.0
+Requires-Dist: dbt-postgres
+Provides-Extra: dev
+Requires-Dist: dagster-webserver; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+
+# dagster_module
+
+This is a [Dagster](https://dagster.io/) project scaffolded with [`dagster project scaffold`](https://docs.dagster.io/guides/build/projects/creating-a-new-project) and configured to run dbt projects.
+
+## Getting started
+
+### Prerequisites
+
+1. Ensure you have Python 3.10+ installed
+2. Make sure your PostgreSQL database is running (required by dbt-postgres)
+3. Configure your dbt profiles.yml with the correct database connection
+
+### Installation
+
+First, install your Dagster code location as a Python package with all dependencies:
+
+```bash
+cd dagster-module
+pip install -e ".[dev]"
+```
+
+This will install:
+
+- `dagster` - The orchestration framework
+- `dagster-dbt` - Dagster integration for dbt
+- `dbt-postgres` - PostgreSQL adapter for dbt
+- Other required dependencies
+
+### Configure dbt
+
+Before running Dagster, ensure your dbt project is properly configured:
+
+1. Check that your dbt profile is configured in `~/.dbt/profiles.yml`:
+
+   ```yaml
+   transform:
+     outputs:
+       dev:
+         type: postgres
+         host: [your-postgres-host]
+         user: [your-postgres-user]
+         password: [your-postgres-password]
+         port: 5432
+         dbname: [your-database-name]
+         schema: public
+         threads: 4
+         keepalives_idle: 0
+     target: dev
+   ```
+
+2. Verify dbt is working by running from the transform directory:
+   ```bash
+   cd ../transform
+   dbt debug
+   dbt run
+   ```
+
+### Run Dagster
+
+Once dbt is configured, start the Dagster UI web server:
+
+```bash
+dagster dev
+```
+
+Open http://localhost:3000 with your browser to see the project.
+
+The Dagster UI will:
+
+- Load all dbt models as assets from the `../transform` directory
+- Display the lineage and dependencies
+- Allow you to run dbt transformations through the UI
+
+## Project Structure
+
+- `dagster_module/assets.py` - Defines dbt assets using `@dbt_assets`
+- `dagster_module/definitions.py` - Main Dagster definitions with resources
+- `../transform/` - The dbt project directory
+
+## Development
+
+### Adding new dbt models
+
+1. Create new `.sql` files in the `../transform/models/` directory
+2. Reload Dagster (it will auto-detect new models)
+3. The new models will appear as assets in the UI
+
+### Unit testing
+
+Tests are in the `dagster_module_tests` directory and you can run tests using `pytest`:
+
+```bash
+pytest dagster_module_tests
+```
+
+### Schedules and sensors
+
+If you want to enable Dagster [Schedules](https://docs.dagster.io/guides/automate/schedules/) or [Sensors](https://docs.dagster.io/guides/automate/sensors/) for your jobs, the [Dagster Daemon](https://docs.dagster.io/guides/deploy/execution/dagster-daemon) process must be running. This is done automatically when you run `dagster dev`.
+
+## Troubleshooting
+
+### dbt manifest not found
+
+If you see errors about missing `manifest.json`, run dbt parse first:
+
+```bash
+cd ../transform
+dbt parse
+```
+
+### dbt connection issues
+
+Verify your database connection:
+
+```bash
+cd ../transform
+dbt debug
+```
+
+### Asset loading issues
+
+Check that the dbt project path is correct in `dagster_module/assets.py`
+
+## Deploy on Dagster+
+
+The easiest way to deploy your Dagster project is to use Dagster+.
+
+Check out the [Dagster+ documentation](https://docs.dagster.io/dagster-plus/) to learn more.

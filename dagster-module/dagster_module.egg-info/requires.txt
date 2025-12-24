@@ -1,0 +1,10 @@
+dagster
+dagster-cloud
+dagster-dbt
+dbt-core<2.0.0,>=1.0.0
+dbt-postgres
+
+[dev]
+dagster-webserver
+pytest
+pytest-cov

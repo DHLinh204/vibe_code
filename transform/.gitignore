@@ -2,4 +2,5 @@ dbt_packages/
 dbt_internal_packages/
 logs/
 target/
-profiles.yml
+profiles.yml/
+.venv

@@ -1,0 +1,31 @@
+[project]
+name = "dagster_module"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "dagster",
+    "dagster-cloud",
+    "dagster-dbt",
+    "dbt-core>=1.0.0,<2.0.0",
+    "dbt-postgres",
+]
+
+[project.optional-dependencies]
+dev = [
+    "dagster-webserver",
+    "pytest",
+    "pytest-cov",
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.dagster]
+module_name = "dagster_module.definitions"
+code_location_name = "dagster_module"
+
+[tool.setuptools.packages.find]
+exclude=["dagster_module_tests"]
