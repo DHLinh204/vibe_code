@@ -1,6 +1,5 @@
 import os
 from pathlib import Path
-
 from dagster import AssetExecutionContext
 from dagster_dbt import DbtCliResource, DbtProject, dbt_assets
 
@@ -17,4 +16,3 @@ dbt_project = DbtProject(
 def transform_dbt_assets(context: AssetExecutionContext, dbt: DbtCliResource) -> None:
 
     yield from dbt.cli(["run"], context=context).stream()
-
